@@ -1,0 +1,78 @@
+# Cursor Rules for Go Development
+
+## Project Overview
+This is a Go CLI application that generates Anki flashcards from Excel files with Russian-English word pairs, enriching them with dictionary data and images via APIs.
+
+## Code Style & Standards
+- Follow Go conventions and idioms
+- Use meaningful variable and function names
+- Add comments for complex logic
+- Keep functions focused and single-purpose
+- Use proper error handling with wrapped errors
+- Prefer composition over inheritance
+
+## Architecture Guidelines
+- Keep business logic in `internal/core/`
+- API clients in `pkg/clients/`
+- Infrastructure concerns in `internal/` subpackages
+- CLI entry point in `cmd/app/`
+- Use dependency injection for services
+
+## Go-Specific Rules
+- Use `go fmt` for formatting
+- Use `gofmt -s` for simplified code
+- Follow Go naming conventions (camelCase for variables, PascalCase for exported)
+- Use `context.Context` for cancellation and timeouts
+- Implement proper logging with structured logging (zap)
+- Use interfaces for testability
+- Handle errors explicitly, don't ignore them
+
+## Testing
+- Write unit tests for business logic
+- Use table-driven tests where appropriate
+- Mock external dependencies
+- Test error conditions
+- Aim for good test coverage
+
+## Error Handling
+- Use `fmt.Errorf("failed to do X: %w", err)` for error wrapping
+- Log errors with context using structured logging
+- Return errors up the call stack
+- Don't panic in production code
+
+## Performance
+- Use buffered I/O for file operations
+- Implement proper timeouts for HTTP requests
+- Use goroutines for concurrent operations when appropriate
+- Profile before optimizing
+
+## Security
+- Validate all user inputs
+- Use environment variables for sensitive data
+- Sanitize filenames and paths
+- Implement proper rate limiting for API calls
+
+## Documentation
+- Add package-level comments for exported packages
+- Document exported functions and types
+- Include usage examples in comments
+- Keep README.md updated
+
+## File Organization
+- Group related functionality in packages
+- Keep main.go simple and focused on CLI setup
+- Use consistent file naming (snake_case for files)
+- Organize imports in standard Go order
+
+## Dependencies
+- Use Go modules for dependency management
+- Keep dependencies minimal and up-to-date
+- Prefer standard library over third-party packages when possible
+- Document why external dependencies are needed
+
+## AI Assistant Guidelines
+- When suggesting code changes, explain the reasoning
+- Provide context for why certain patterns are used
+- Suggest improvements for error handling and logging
+- Help with testing strategies
+- Assist with debugging and troubleshooting 
