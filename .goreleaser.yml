@@ -34,6 +34,4 @@ checksum:
   name_template: 'checksums.txt'
 
 release:
-  github:
-    owner: yourusername
-    name: anki-flashcards-autogen-cli 
+  github: {}
