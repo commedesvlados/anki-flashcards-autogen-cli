@@ -9,8 +9,8 @@ import (
 	"time"
 
 	"github.com/commedesvlados/anki-flashcards-autogen-cli/internal/core"
+	"github.com/commedesvlados/anki-flashcards-autogen-cli/internal/downloader"
 	"github.com/commedesvlados/anki-flashcards-autogen-cli/internal/excel"
-	"github.com/commedesvlados/anki-flashcards-autogen-cli/internal/media"
 	"github.com/commedesvlados/anki-flashcards-autogen-cli/internal/storage"
 	free_dictionary "github.com/commedesvlados/anki-flashcards-autogen-cli/pkg/clients/free-dictionary"
 	"github.com/commedesvlados/anki-flashcards-autogen-cli/pkg/clients/unsplash"
@@ -46,7 +46,7 @@ func NewApp(config *Config, logger *zap.Logger) *App {
 	excelReader := excel.NewReader(logger)
 	dictionaryAPI := free_dictionary.NewAPI(logger)
 	imageAPI := unsplash.NewAPI(config.UnsplashKey, logger)
-	downloader := media.NewDownloader(config.MediaDir, logger)
+	downloader := downloader.NewDownloader(config.MediaDir, logger)
 	enrichmentService := core.NewEnrichmentService(dictionaryAPI, imageAPI, downloader, logger)
 	jsonExporter := storage.NewJSONExporter(logger)
 

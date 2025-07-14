@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/commedesvlados/anki-flashcards-autogen-cli/internal/media"
+	"github.com/commedesvlados/anki-flashcards-autogen-cli/internal/downloader"
 	free_dictionary "github.com/commedesvlados/anki-flashcards-autogen-cli/pkg/clients/free-dictionary"
 	"github.com/commedesvlados/anki-flashcards-autogen-cli/pkg/clients/unsplash"
 
@@ -17,14 +17,14 @@ import (
 type EnrichmentService struct {
 	dictionaryAPI *free_dictionary.API
 	imageAPI      *unsplash.API
-	downloader    *media.Downloader
+	downloader    *downloader.Downloader
 	logger        *zap.Logger
 }
 
 // NewEnrichmentService creates a new enrichment service
 //
 //nolint:lll
-func NewEnrichmentService(dictionaryAPI *free_dictionary.API, imageAPI *unsplash.API, downloader *media.Downloader, logger *zap.Logger) *EnrichmentService {
+func NewEnrichmentService(dictionaryAPI *free_dictionary.API, imageAPI *unsplash.API, downloader *downloader.Downloader, logger *zap.Logger) *EnrichmentService {
 	return &EnrichmentService{
 		dictionaryAPI: dictionaryAPI,
 		imageAPI:      imageAPI,
