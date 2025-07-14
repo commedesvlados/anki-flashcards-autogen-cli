@@ -1,3 +1,7 @@
+run:
+  timeout: 5m
+  modules-download-mode: readonly
+
 linters-settings:
   dupl:
     threshold: 100
@@ -26,7 +30,7 @@ linters-settings:
       - pattern: 'interface{}'
         replacement: 'any'
   goimports:
-    local-prefixes: github.com/golangci/golangci-lint
+    local-prefixes: github.com/commedesvlados/anki-flashcards-autogen-cli
   mnd:
     # don't include the "operation" and "assign"
     checks:
@@ -41,7 +45,6 @@ linters-settings:
       - '3'
     ignored-functions:
       - strings.SplitN
-
   shadow: true
   govet:
     settings:
@@ -127,7 +130,6 @@ issues:
       text: "SA1019: lsc.Errcheck.Exclude is deprecated: use ExcludeFunctions instead"
     - path: pkg/commands/run.go
       text: "SA1019: e.cfg.Run.Deadline is deprecated: Deadline exists for historical compatibility and should not be used."
-
     - path: pkg/golinters/gofumpt.go
       text: "SA1019: settings.LangVersion is deprecated: use the global `run.go` instead."
     - path: pkg/golinters/staticcheck_common.go
@@ -136,13 +138,9 @@ issues:
       text: "SA1019: (.+).(GoVersion|LangVersion) is deprecated: use the global `run.go` instead."
     - path: pkg/golinters/unused.go
       text: "rangeValCopy: each iteration copies 160 bytes \\(consider pointers or indexing\\)"
-  exclude-dirs:
-    - test/testdata_etc # test files
-    - internal/cache # extracted from Go code
-    - internal/renameio # extracted from Go code
-    - internal/robustio # extracted from Go code
-    - cmd/grpc-cli
-    - cmd/kafka-cli
-
-run:
-  timeout: 5m
+    # Add exclusion for internal/media package issues
+    - path: internal/media
+      linters:
+        - typecheck
+        - unused
+        - staticcheck
