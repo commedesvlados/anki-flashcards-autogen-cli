@@ -526,10 +526,6 @@ make install-user
 make test
 ```
 
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
 ## Acknowledgments
 
 - [Free Dictionary API](https://dictionaryapi.dev/) for word definitions and audio
