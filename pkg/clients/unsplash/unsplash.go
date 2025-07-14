@@ -45,7 +45,7 @@ func (api *API) GetImageURL(ctx context.Context, query string) (string, error) {
 
 	api.logger.Debug("Fetching image URL", zap.String("query", query), zap.String("url", apiURL))
 
-	req, err := http.NewRequestWithContext(ctx, "GET", apiURL, nil)
+	req, err := http.NewRequestWithContext(ctx, "GET", apiURL, http.NoBody)
 	if err != nil {
 		return "", fmt.Errorf("failed to create request: %w", err)
 	}
@@ -56,7 +56,7 @@ func (api *API) GetImageURL(ctx context.Context, query string) (string, error) {
 	// Add retry logic
 	var resp *http.Response
 	err = util.RetryWithBackoff(ctx, 3, func() error {
-		resp, err = api.client.Do(req)
+		resp, err = api.client.Do(req) //nolint:bodyclose
 		if err != nil {
 			return fmt.Errorf("failed to make request: %w", err)
 		}

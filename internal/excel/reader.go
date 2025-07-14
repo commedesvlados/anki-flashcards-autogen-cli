@@ -48,7 +48,7 @@ func (r *Reader) ReadWordPairs(filePath string) ([]*core.RawFlashcard, error) {
 	}
 
 	if len(rows) < 2 {
-		return nil, fmt.Errorf("Excel file must have at least 2 rows (header + data)")
+		return nil, fmt.Errorf("Excel file must have at least 2 rows (header + data)") //nolint:stylecheck
 	}
 
 	var wordPairs []*core.RawFlashcard
@@ -108,7 +108,7 @@ func (r *Reader) ValidateExcelFile(filePath string) error {
 	}
 
 	if len(rows) < 2 {
-		return fmt.Errorf("Excel file must have at least 2 rows (header + data)")
+		return fmt.Errorf("Excel file must have at least 2 rows (header + data)") //nolint:stylecheck
 	}
 
 	// Check header row

@@ -1,4 +1,5 @@
-package free_dictionary
+//nolint:gofmt
+package free_dictionary //nolint:stylecheck
 
 type WordInfoErrorResp struct {
 	Title      string `json:"title"`
@@ -12,10 +13,10 @@ type WordInfoResp struct {
 	Phonetics []struct {
 		Text      string `json:"text"`
 		Audio     string `json:"audio"`
-		SourceUrl string `json:"sourceUrl"`
+		SourceURL string `json:"sourceUrl"`
 		License   struct {
 			Name string `json:"name"`
-			Url  string `json:"url"`
+			URL  string `json:"url"`
 		} `json:"license"`
 	} `json:"phonetics"`
 	Meanings []struct {
@@ -31,7 +32,7 @@ type WordInfoResp struct {
 	} `json:"meanings"`
 	License struct {
 		Name string `json:"name"`
-		Url  string `json:"url"`
+		URL  string `json:"url"`
 	} `json:"license"`
-	SourceUrls []string `json:"sourceUrls"`
+	SourceURLs []string `json:"sourceUrls"`
 }

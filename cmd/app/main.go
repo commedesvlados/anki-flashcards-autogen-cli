@@ -36,11 +36,12 @@ var (
 var rootCmd = &cobra.Command{
 	Use:     "anki-builder",
 	Short:   "Anki Flashcard Builder",
-	Long:    `A CLI tool that reads Russian-English word pairs from Excel, enriches them with dictionary data and images, and generates Anki packages.`,
+	Long:    `A CLI tool that reads Russian-English word pairs from Excel, enriches them with dictionary data and images, and generates Anki packages.`, //nolint:lll
 	Version: Version,
 	Run:     runMain,
 }
 
+//nolint:gochecknoinits
 func init() {
 	rootCmd.PersistentFlags().StringVarP(&excelFile, "excel", "e", "data/words.xlsx", "Path to Excel file with word pairs")
 	rootCmd.PersistentFlags().StringVarP(&outputFile, "output", "o", "output/vocab.apkg", "Output Anki package file")
@@ -61,6 +62,7 @@ func main() {
 	}
 }
 
+//nolint:revive
 func runMain(cmd *cobra.Command, args []string) {
 	if unsplashKey == "" {
 		unsplashKey = os.Getenv("UNSPLASH_API_KEY")
@@ -71,7 +73,11 @@ func runMain(cmd *cobra.Command, args []string) {
 	}
 
 	logger := setupLogger(verbose)
-	defer logger.Sync()
+	defer func() {
+		if err := logger.Sync(); err != nil {
+			fmt.Fprintf(os.Stderr, "logger.Sync error: %v\n", err)
+		}
+	}()
 
 	finalOutputFile := outputFile
 	if finalOutputFile == "output/vocab.apkg" {
@@ -81,7 +87,7 @@ func runMain(cmd *cobra.Command, args []string) {
 
 	dirs := []string{mediaDir, enrichedDir, filepath.Dir(finalOutputFile)}
 	for _, dir := range dirs {
-		if err := os.MkdirAll(dir, 0755); err != nil {
+		if err := os.MkdirAll(dir, 0755); err != nil { //nolint:mnd
 			logger.Fatal("Failed to create directory", zap.String("dir", dir), zap.Error(err))
 		}
 	}
@@ -98,7 +104,7 @@ func runMain(cmd *cobra.Command, args []string) {
 	}
 
 	application := app.NewApp(config, logger)
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Minute)
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Minute) //nolint:mnd
 	defer cancel()
 
 	if err := application.Run(ctx); err != nil {

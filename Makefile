@@ -1,3 +1,5 @@
+GO_PATH := $(shell go env GOPATH)
+
 # Build variables
 BINARY_NAME=anki-builder
 VERSION=$(shell git describe --tags --always --dirty 2>/dev/null || echo "dev")
@@ -10,6 +12,16 @@ PLATFORMS=linux/amd64 linux/arm64 darwin/amd64 darwin/arm64 windows/amd64 window
 .PHONY: all build clean install uninstall release help
 
 all: clean build
+
+lint: check-lint dep
+	golangci-lint run --timeout=5m -c .golangci.yml
+
+check-lint:
+	@which golangci-lint || curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(GO_PATH)/bin v1.64.8
+
+dep:
+	@go mod tidy
+	@go mod download
 
 # Build for current platform
 build:
@@ -79,10 +91,6 @@ test-coverage:
 # Format code
 fmt:
 	go fmt ./...
-
-# Lint code
-lint:
-	golangci-lint run
 
 # Show help
 help:

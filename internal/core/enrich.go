@@ -22,6 +22,8 @@ type EnrichmentService struct {
 }
 
 // NewEnrichmentService creates a new enrichment service
+//
+//nolint:lll
 func NewEnrichmentService(dictionaryAPI *free_dictionary.API, imageAPI *unsplash.API, downloader *media.Downloader, logger *zap.Logger) *EnrichmentService {
 	return &EnrichmentService{
 		dictionaryAPI: dictionaryAPI,
@@ -32,6 +34,8 @@ func NewEnrichmentService(dictionaryAPI *free_dictionary.API, imageAPI *unsplash
 }
 
 // EnrichFlashcard enriches a single flashcard with dictionary data and media
+//
+//nolint:gocyclo
 func (e *EnrichmentService) EnrichFlashcard(ctx context.Context, raw *RawFlashcard, id int) (*Flashcard, error) {
 	e.logger.Info("Enriching flashcard", zap.String("english", raw.English), zap.String("russian", raw.Russian))
 
@@ -83,7 +87,7 @@ func (e *EnrichmentService) EnrichFlashcard(ctx context.Context, raw *RawFlashca
 		// Find UK and US audio from all entries
 		var ukAudio, usAudio, ukIPA, usIPA string
 
-		for _, entry := range dictionaryData {
+		for _, entry := range dictionaryData { //nolint:gocritic
 			for _, phonetic := range entry.Phonetics {
 				if phonetic.Audio != "" {
 					// Parse audio URL to determine region

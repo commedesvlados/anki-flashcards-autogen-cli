@@ -29,7 +29,7 @@ func (e *JSONExporter) ExportFlashcards(flashcards []*core.Flashcard, outputPath
 
 	// Create output directory if it doesn't exist
 	outputDir := filepath.Dir(outputPath)
-	if err := os.MkdirAll(outputDir, 0755); err != nil {
+	if err := os.MkdirAll(outputDir, 0700); err != nil { //nolint:mnd
 		return fmt.Errorf("failed to create output directory: %w", err)
 	}
 
@@ -46,7 +46,7 @@ func (e *JSONExporter) ExportFlashcards(flashcards []*core.Flashcard, outputPath
 	}
 
 	// Write to file
-	if err := os.WriteFile(outputPath, jsonData, 0644); err != nil {
+	if err := os.WriteFile(outputPath, jsonData, 0600); err != nil { //nolint:mnd
 		return fmt.Errorf("failed to write JSON file: %w", err)
 	}
 

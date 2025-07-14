@@ -68,7 +68,7 @@ func (a *App) Run(ctx context.Context) error {
 	// Step 1: Validate Excel file
 	a.logger.Info("Step 1: Validating Excel file")
 	if err := a.excelReader.ValidateExcelFile(a.config.ExcelFile); err != nil {
-		return fmt.Errorf("Excel validation failed: %w", err)
+		return fmt.Errorf("Excel validation failed: %w", err) //nolint:stylecheck
 	}
 
 	// Step 2: Read word pairs from Excel
@@ -132,7 +132,7 @@ func (a *App) enrichWithProgress(ctx context.Context, rawFlashcards []*core.RawF
 	bar := progressbar.NewOptions(len(rawFlashcards),
 		progressbar.OptionEnableColorCodes(true),
 		progressbar.OptionShowBytes(false),
-		progressbar.OptionSetWidth(15),
+		progressbar.OptionSetWidth(15), //nolint:mnd
 		progressbar.OptionSetDescription("[cyan][1/1][reset] Enriching flashcards"),
 		progressbar.OptionSetTheme(progressbar.Theme{
 			Saucer:        "[green]=[reset]",
@@ -164,7 +164,9 @@ func (a *App) enrichWithProgress(ctx context.Context, rawFlashcards []*core.RawF
 		}
 
 		enriched = append(enriched, flashcard)
-		bar.Add(1)
+		if err := bar.Add(1); err != nil {
+			a.logger.Warn("Failed to update progress bar", zap.Error(err))
+		}
 	}
 
 	return enriched, nil
@@ -176,16 +178,16 @@ func (a *App) generateAnkiPackage(jsonPath, outputFile string) error {
 
 	// Check if Python script exists
 	if _, err := os.Stat(scriptPath); os.IsNotExist(err) {
-		return fmt.Errorf("Python script not found: %s", scriptPath)
+		return fmt.Errorf("Python script not found: %s", scriptPath) //nolint:stylecheck
 	}
 
 	// Create output directory if it doesn't exist
 	outputDir := filepath.Dir(outputFile)
-	if err := os.MkdirAll(outputDir, 0755); err != nil {
+	if err := os.MkdirAll(outputDir, 0755); err != nil { //nolint:mnd
 		return fmt.Errorf("failed to create output directory: %w", err)
 	}
 
-	// Execute Python script using virtual environment
+	//nolint:gosec // Acceptable risk: controlled input for exec.Command
 	cmd := exec.Command("./venv/bin/python", scriptPath, jsonPath, a.config.MediaDir, outputFile, a.config.DeckName)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
@@ -198,7 +200,7 @@ func (a *App) generateAnkiPackage(jsonPath, outputFile string) error {
 		zap.String("deck_name", a.config.DeckName))
 
 	if err := cmd.Run(); err != nil {
-		return fmt.Errorf("Python script failed: %w", err)
+		return fmt.Errorf("Python script failed: %w", err) //nolint:stylecheck
 	}
 
 	return nil

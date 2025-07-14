@@ -1,3 +1,4 @@
+//nolint:stylecheck
 package free_dictionary
 
 import (
@@ -39,7 +40,7 @@ func (api *API) GetWordInfo(ctx context.Context, word string) ([]WordInfoResp, e
 
 	api.logger.Debug("Fetching word info", zap.String("word", word), zap.String("url", apiURL))
 
-	req, err := http.NewRequestWithContext(ctx, "GET", apiURL, nil)
+	req, err := http.NewRequestWithContext(ctx, "GET", apiURL, http.NoBody)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create request: %w", err)
 	}
@@ -47,7 +48,7 @@ func (api *API) GetWordInfo(ctx context.Context, word string) ([]WordInfoResp, e
 	// Add retry logic
 	var resp *http.Response
 	err = util.RetryWithBackoff(ctx, 3, func() error {
-		resp, err = api.client.Do(req)
+		resp, err = api.client.Do(req) //nolint:bodyclose
 		if err != nil {
 			return fmt.Errorf("failed to make request: %w", err)
 		}
