@@ -463,15 +463,6 @@ Enable verbose logging for detailed debugging:
 
 ### Package Managers
 
-#### Homebrew (macOS/Linux)
-```bash
-# Add tap (when available)
-brew tap commedesvlados/anki-builder
-
-# Install
-brew install anki-builder
-```
-
 #### Manual Installation Script
 ```bash
 # Download and run installer
