@@ -57,6 +57,8 @@ anki-builder make-apkg --input data/words.xlsx --output output.vocab.apkg --unsp
 
 ## PDF Extraction (extract-pdf) Issues
 
+- **Developer Note:** The extract-pdf command is orchestrated via `app.NewPDFExtractor` and `PDFExtractorConfig`, just like make-apkg uses `NewApkgMaker`. If you are debugging, check these orchestrators.
+
 1. **UniPDF API key error**:
    - Ensure you have a valid UniPDF API key (https://unidoc.io/pricing/)
    - Pass it with `--uni-api-key`

@@ -271,3 +271,6 @@ anki-builder extract-pdf --uni-api-key=YOUR_KEY --input-pdf-book-path=book.pdf -
 This will create an Excel file with all unique highlighted/underlined words in column B.
 
 **Note:** Requires a [UniPDF API key](https://unidoc.io/pricing/). Free tier available for limited use.
+
+> **Developer Note:**
+> The `extract-pdf` command is orchestrated via `app.NewPDFExtractor` and `PDFExtractorConfig`, mirroring the architecture of `make-apkg` (which uses `NewApkgMaker`). This ensures modularity and testability.

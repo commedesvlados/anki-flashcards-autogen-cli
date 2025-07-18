@@ -74,6 +74,7 @@ make help
 
 - Code: `cmd/cli/extract_pdf.go`
 - Implements the `extract-pdf` CLI command for extracting highlighted/underlined words from PDFs to Excel.
+- Orchestrated via `app.NewPDFExtractor` and `PDFExtractorConfig` (mirrors `make-apkg`/`NewApkgMaker` pattern).
 - Uses UniPDF API (requires API key).
 - To add new flags, edit the `extractPdfOptions` struct and `NewExtractPdfCmd()`.
 - To test, run:

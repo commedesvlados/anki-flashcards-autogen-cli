@@ -9,7 +9,7 @@
 - 📝 **Structured Logging**: Comprehensive logging with Zap
 - 🔄 **Retry Logic**: Robust error handling with exponential backoff
 - 🧪 **Testable**: Clean architecture with unit test support
-- 🆕 **PDF Word Extraction**: Extracts highlighted/underlined words from PDF files to Excel (see `extract-pdf` command)
+- 🆕 **PDF Word Extraction**: Extracts highlighted/underlined words from PDF files to Excel (see `extract-pdf` command, orchestrated via `app.NewPDFExtractor`)
 
 ---
 
@@ -55,7 +55,7 @@ The application follows clean architecture principles:
 
 ### Folder Descriptions
 - `cmd/cli/`: CLI entry point
-- `cmd/cli/extract_pdf.go`: Implements the `extract-pdf` command for extracting annotated words from PDFs to Excel. Uses UniPDF API.
+- `cmd/cli/extract_pdf.go`: Implements the `extract-pdf` command for extracting annotated words from PDFs to Excel. Uses UniPDF API and is orchestrated via `app.NewPDFExtractor` and `PDFExtractorConfig` (mirrors `make-apkg`/`NewApkgMaker`).
 - `internal/core/`: Business logic and models
 - `internal/excel/`: Excel file reading
 - `internal/downloader/`: Media downloaders (audio, images)
