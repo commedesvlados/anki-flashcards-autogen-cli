@@ -66,9 +66,8 @@ output/*.apkg
 media/
 # Enriched JSON data
 enriched/
-# Excel files (uncomment if you don't want to track them)
-# data/*.xlsx
-# data/*.xls
+# Excel files
+data/*
 
 # Logs
 *.log

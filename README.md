@@ -1,3 +1,11 @@
+[//]: # (History/Related Docs)
+
+- [README.md](./README.md)
+- [README.md (copy)](./README.md)
+- [ARCHITECTURE.md](./docs/ARCHITECTURE.md)
+- [DEVELOPMENT.md](./docs/DEVELOPMENT.md)
+- [TROUBLESHOOTING.md](./docs/TROUBLESHOOTING.md)
+
 # Anki Flashcard Builder
 
 > **See more topics:**
