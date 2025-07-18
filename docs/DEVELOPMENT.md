@@ -22,19 +22,19 @@ make clean
 ### Manual Cross-Compilation
 ```bash
 # Linux (x86_64)
-GOOS=linux GOARCH=amd64 go build -o build/anki-builder_linux_amd64 cmd/app/main.go
+GOOS=linux GOARCH=amd64 go build -o build/anki-builder_linux_amd64 cmd/cli/main.go
 
 # Linux (ARM64)
-GOOS=linux GOARCH=arm64 go build -o build/anki-builder_linux_arm64 cmd/app/main.go
+GOOS=linux GOARCH=arm64 go build -o build/anki-builder_linux_arm64 cmd/cli/main.go
 
 # macOS (Intel)
-GOOS=darwin GOARCH=amd64 go build -o build/anki-builder_darwin_amd64 cmd/app/main.go
+GOOS=darwin GOARCH=amd64 go build -o build/anki-builder_darwin_amd64 cmd/cli/main.go
 
 # macOS (Apple Silicon)
-GOOS=darwin GOARCH=arm64 go build -o build/anki-builder_darwin_arm64 cmd/app/main.go
+GOOS=darwin GOARCH=arm64 go build -o build/anki-builder_darwin_arm64 cmd/cli/main.go
 
 # Windows (x86_64)
-GOOS=windows GOARCH=amd64 go build -o build/anki-builder_windows_amd64.exe cmd/app/main.go
+GOOS=windows GOARCH=amd64 go build -o build/anki-builder_windows_amd64.exe cmd/cli/main.go
 ```
 
 ## Development Commands
@@ -69,3 +69,14 @@ make help
 - Implement proper logging with structured logging (zap)
 - Use interfaces for testability
 - Handle errors explicitly, don't ignore them 
+
+## PDF Extraction Command (extract-pdf)
+
+- Code: `cmd/cli/extract_pdf.go`
+- Implements the `extract-pdf` CLI command for extracting highlighted/underlined words from PDFs to Excel.
+- Uses UniPDF API (requires API key).
+- To add new flags, edit the `extractPdfOptions` struct and `NewExtractPdfCmd()`.
+- To test, run:
+  ```bash
+  go run cmd/cli/main.go extract-pdf --uni-api-key=... --input-pdf-book-path=... --output-excel-path=...
+  ``` 

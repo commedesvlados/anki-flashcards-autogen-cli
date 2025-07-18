@@ -110,7 +110,7 @@ curl -fsSL https://raw.githubusercontent.com/commedesvlados/anki-flashcards-auto
    make build
    
    # Or build manually
-   go build -o build/anki-builder cmd/app/main.go
+   go build -o build/anki-builder cmd/cli/main.go
    ```
 
 5. **Install locally**:
@@ -128,23 +128,23 @@ curl -fsSL https://raw.githubusercontent.com/commedesvlados/anki-flashcards-auto
 ## Basic Usage
 
 ```bash
-anki-builder --excel your_sheet.xlsx --output completed_flashcards.apkg --unsplash YOUR_UNSPLASH_API_KEY
+anki-builder make-apkg --input your_sheet.xlsx --output completed_flashcards.apkg --unsplash YOUR_UNSPLASH_API_KEY
 ```
 
 #### Optional: Clean up media files after build
 To save disk space (especially for large decks), use the `--no-media-cache` flag to automatically delete all files in the media directory after the .apkg is built:
 
 ```bash
-anki-builder --excel your_sheet.xlsx --output completed_flashcards.apkg --unsplash YOUR_UNSPLASH_API_KEY --no-media-cache
+anki-builder make-apkg --input your_sheet.xlsx --output completed_flashcards.apkg --unsplash YOUR_UNSPLASH_API_KEY --no-media-cache
 ```
 
-**Note:** Only `--excel` (`-e`), `--output` (`-o`), and `--verbose` (`-v`) have short flag forms. All other flags must use the double-dash long form (e.g. `--deck`, `--unsplash`).
+**Note:** Only `--input` (`-i`), `--output` (`-o`), and `--verbose` (`-v`) have short flag forms. All other flags must use the double-dash long form (e.g. `--deck`, `--unsplash`).
 
 ### Command Line Options
 
 | Flag | Short | Description | Default | Required |
 |------|-------|-------------|---------|----------|
-| `--excel` | `-e` | Path to Excel file with word pairs | `data/words.xlsx` | No |
+| `--input` | `-i` | Path to Excel file with word pairs | `data/words.xlsx` | No |
 | `--output` | `-o` | Output Anki package file | `output/vocab.apkg` | No |
 | `--media` |  | Directory for downloaded media files | `media` | No |
 | `--enriched` |  | Directory for enriched JSON data | `enriched` | No |
@@ -183,8 +183,8 @@ The Excel file should have the following structure:
 2. **Get Unsplash API key** from [Unsplash Developers](https://unsplash.com/developers)
 3. **Run the application**:
 ```bash
-anki-builder \
-  --excel data/vocabulary.xlsx \
+anki-builder make-apkg \
+  --input data/vocabulary.xlsx \
   --output my_deck.apkg \
   --unsplash YOUR_API_KEY \
   --verbose \
@@ -225,3 +225,49 @@ Each flashcard includes:
 - **IPA pronunciation** (UK and US)
 - **Audio pronunciation** (UK and US)
 - **Relevant image**
+
+## PDF Word Extraction (extract-pdf)
+
+Extract all unique words that are highlighted or underlined in a PDF file and write them to an Excel (.xlsx) file. Useful for quickly building vocabulary lists from annotated e-books or study materials.
+
+### Usage
+
+```bash
+anki-builder extract-pdf \
+  --uni-api-key YOUR_UNIPDF_API_KEY \
+  --input-pdf-book-path /path/to/book.pdf \
+  --output-excel-path /path/to/output.xlsx
+```
+
+### Command Line Options
+
+| Flag | Description | Required |
+|------|-------------|----------|
+| `--uni-api-key` | UniPDF API key | **Yes** |
+| `--input-pdf-book-path` | Path to input PDF file | **Yes** |
+| `--output-excel-path` | Path to output Excel file | **Yes** |
+| `--verbose` | Enable verbose logging | No |
+
+### Excel Output Format
+
+The generated Excel file will have:
+
+| Column A (Russian) | Column B (English) | Column C (PartOfSpeech) |
+|--------------------|--------------------|------------------------|
+| (empty)            | extracted_word     | (empty)                |
+
+- Only unique words are written (deduplicated)
+- All words are lowercased
+- Only column B is filled; columns A and C are left empty for later enrichment
+
+### Example
+
+Suppose you highlight or underline words in a PDF e-book. Run:
+
+```bash
+anki-builder extract-pdf --uni-api-key=YOUR_KEY --input-pdf-book-path=book.pdf --output-excel-path=words.xlsx
+```
+
+This will create an Excel file with all unique highlighted/underlined words in column B.
+
+**Note:** Requires a [UniPDF API key](https://unidoc.io/pricing/). Free tier available for limited use.

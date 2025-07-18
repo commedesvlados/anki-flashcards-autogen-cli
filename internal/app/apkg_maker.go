@@ -19,29 +19,29 @@ import (
 	"go.uber.org/zap"
 )
 
-// Config holds application configuration
-type Config struct {
+// ApkgMakerConfig holds application configuration
+type ApkgMakerConfig struct {
+	ProgressBar  bool
 	ExcelFile    string
+	OutputFile   string
+	DeckName     string
+	UnsplashKey  string
 	MediaDir     string
 	EnrichedDir  string
-	OutputFile   string
-	UnsplashKey  string
-	ProgressBar  bool
-	DeckName     string
 	NoMediaCache bool
 }
 
-// App is the main application orchestrator
-type App struct {
-	config            *Config
+// ApkgMaker is the main application orchestrator
+type ApkgMaker struct {
+	config            *ApkgMakerConfig
 	logger            *zap.Logger
 	excelReader       *excel.Reader
 	enrichmentService *core.EnrichmentService
 	jsonExporter      *storage.JSONExporter
 }
 
-// NewApp creates a new application instance
-func NewApp(config *Config, logger *zap.Logger) *App {
+// NewApkgMaker creates a new application instance
+func NewApkgMaker(config *ApkgMakerConfig, logger *zap.Logger) *ApkgMaker {
 	// Initialize components
 	excelReader := excel.NewReader(logger)
 	dictionaryAPI := free_dictionary.NewAPI(logger)
@@ -50,7 +50,7 @@ func NewApp(config *Config, logger *zap.Logger) *App {
 	enrichmentService := core.NewEnrichmentService(dictionaryAPI, imageAPI, downloader, logger)
 	jsonExporter := storage.NewJSONExporter(logger)
 
-	return &App{
+	return &ApkgMaker{
 		config:            config,
 		logger:            logger,
 		excelReader:       excelReader,
@@ -60,7 +60,7 @@ func NewApp(config *Config, logger *zap.Logger) *App {
 }
 
 // Run executes the complete flashcard generation process
-func (a *App) Run(ctx context.Context) error {
+func (a *ApkgMaker) Run(ctx context.Context) error {
 	a.logger.Info("Starting Anki Flashcard Builder",
 		zap.String("excel_file", a.config.ExcelFile),
 		zap.String("output_file", a.config.OutputFile))
@@ -126,7 +126,7 @@ func (a *App) Run(ctx context.Context) error {
 }
 
 // enrichWithProgress enriches flashcards with a progress bar
-func (a *App) enrichWithProgress(ctx context.Context, rawFlashcards []*core.RawFlashcard) ([]*core.Flashcard, error) {
+func (a *ApkgMaker) enrichWithProgress(ctx context.Context, rawFlashcards []*core.RawFlashcard) ([]*core.Flashcard, error) {
 	enriched := make([]*core.Flashcard, 0, len(rawFlashcards))
 
 	bar := progressbar.NewOptions(len(rawFlashcards),
@@ -173,7 +173,7 @@ func (a *App) enrichWithProgress(ctx context.Context, rawFlashcards []*core.RawF
 }
 
 // generateAnkiPackage calls the Python script to generate the Anki package
-func (a *App) generateAnkiPackage(jsonPath, outputFile string) error {
+func (a *ApkgMaker) generateAnkiPackage(jsonPath, outputFile string) error {
 	scriptPath := "scripts/make_apkg.py"
 
 	// Check if Python script exists

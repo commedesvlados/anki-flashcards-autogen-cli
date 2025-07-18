@@ -52,5 +52,20 @@
 
 Enable verbose logging for detailed debugging:
 ```bash
-./build/anki-builder --verbose --unsplash YOUR_API_KEY
+anki-builder make-apkg --input data/words.xlsx --output output.vocab.apkg --unsplash YOUR_API_KEY --verbose
 ``` 
+
+## PDF Extraction (extract-pdf) Issues
+
+1. **UniPDF API key error**:
+   - Ensure you have a valid UniPDF API key (https://unidoc.io/pricing/)
+   - Pass it with `--uni-api-key`
+2. **PDF file not found**:
+   - Check the path to your PDF file
+   - Ensure file permissions are correct
+3. **Excel file write error**:
+   - Check output path and permissions
+   - Ensure the file is not open in another program
+4. **No words extracted**:
+   - Ensure your PDF has highlighted or underlined annotations
+   - Some PDFs may use non-standard annotation formats 

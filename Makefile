@@ -26,7 +26,7 @@ dep:
 # Build for current platform
 build:
 	@echo "Building for current platform..."
-	go build ${LDFLAGS} -o build/${BINARY_NAME} ./cmd/app
+	go build ${LDFLAGS} -o build/${BINARY_NAME} ./cmd/cli
 
 # Build for all platforms
 release:
@@ -39,7 +39,7 @@ release:
 			BINARY_SUFFIX=$${BINARY_SUFFIX}.exe; \
 		fi; \
 		echo "Building for $$GOOS/$$GOARCH..."; \
-		GOOS=$$GOOS GOARCH=$$GOARCH go build ${LDFLAGS} -o build/${BINARY_NAME}_$${BINARY_SUFFIX} ./cmd/app; \
+		GOOS=$$GOOS GOARCH=$$GOARCH go build ${LDFLAGS} -o build/${BINARY_NAME}_$${BINARY_SUFFIX} ./cmd/cli; \
 	done
 
 # Install to system (Linux/macOS)

@@ -9,6 +9,7 @@
 - 📝 **Structured Logging**: Comprehensive logging with Zap
 - 🔄 **Retry Logic**: Robust error handling with exponential backoff
 - 🧪 **Testable**: Clean architecture with unit test support
+- 🆕 **PDF Word Extraction**: Extracts highlighted/underlined words from PDF files to Excel (see `extract-pdf` command)
 
 ---
 
@@ -17,7 +18,7 @@
 ```
 anki-flashcards/
 ├── cmd/                   # CLI entrypoint
-│   └── app/
+│   └── cli/
 │       └── main.go
 ├── internal/
 │   ├── core/              # Domain logic (pure, testable)
@@ -31,7 +32,7 @@ anki-flashcards/
 │   │   └── json_export.go
 │   ├── util/              # Utilities
 │   │   └── retry.go
-│   └── app/               # Application orchestrator
+│   └── cli/               # Application orchestrator
 │       └── app.go
 ├── scripts/
 │   └── make_apkg.py       # Python genanki script
@@ -49,17 +50,18 @@ The application follows clean architecture principles:
 
 - **Domain Layer** (`internal/core/`): Pure business logic, no dependencies
 - **Infrastructure Layer** (`pkg/clients/`, `internal/downloader/`): External API clients and media downloaders
-- **Application Layer** (`internal/app/`): Use cases and orchestration
-- **Interface Layer** (`cmd/app/`): CLI interface
+- **Application Layer** (`internal/cli/`): Use cases and orchestration
+- **Interface Layer** (`cmd/cli/`): CLI interface
 
 ### Folder Descriptions
-- `cmd/app/`: CLI entry point
+- `cmd/cli/`: CLI entry point
+- `cmd/cli/extract_pdf.go`: Implements the `extract-pdf` command for extracting annotated words from PDFs to Excel. Uses UniPDF API.
 - `internal/core/`: Business logic and models
 - `internal/excel/`: Excel file reading
 - `internal/downloader/`: Media downloaders (audio, images)
 - `internal/storage/`: JSON export logic
 - `internal/util/`: Utilities (e.g., retry logic)
-- `internal/app/`: Application orchestrator
+- `internal/cli/`: Application orchestrator
 - `pkg/clients/`: API response models and clients
 - `scripts/`: Python scripts (e.g., genanki)
 - `data/`: Input Excel files

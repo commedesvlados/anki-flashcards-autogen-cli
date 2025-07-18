@@ -12,7 +12,7 @@ builds:
       - goos: windows
         goarch: arm64
     binary: anki-builder
-    main: ./cmd/app
+    main: ./cmd/cli
     ldflags:
       - -s -w
       - -X main.Version={{.Version}}
